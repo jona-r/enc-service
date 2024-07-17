@@ -1,4 +1,4 @@
-FROM node:6.14.1-alpine
+FROM node:20.15.1-bookworm
 
 MAINTAINER "S M Y ALTAMASH" "smy.altamash@gmail.com"
 
@@ -6,22 +6,23 @@ WORKDIR /home/enc
 
 COPY . /home/enc
 
-# Install necessary packages
-RUN apk update \
-    && apk add --no-cache \
+# Install necessary packages and cleanup in a single RUN statement
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
         g++ \
-        build-base \
+        build-essential \
         zip \
         python3 \
+        python2.7 \
         make \
     && npm install -g npm@latest \
-    && apk del \
+    && apt-get purge -y --auto-remove \
         g++ \
-        build-base \
-        python3 \
+        build-essential \
         make \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8013
 
 CMD ["sh", "entrypoint.sh"]
+
