@@ -26,7 +26,7 @@ node('build-slave') {
             }
 
             stage('Package') {
-                sh "/opt/apache-maven-3.6.3/bin/mvn3.6 package -Pbuild-docker-image -Drelease-version=${build_tag}"
+                sh "/opt/apache-maven-3.6.3/bin/mvn package -Pbuild-docker-image -Drelease-version=${build_tag}"
             }
 
             stage('Retagging'){
